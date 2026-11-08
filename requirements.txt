@@ -1,0 +1,16 @@
+# Ant Colony Optimization (ACO) & TSP Simulator
+# Core Scientific & Mathematical Stack
+numpy>=1.26.0
+scipy>=1.12.0
+pandas>=2.2.0
+
+# Graph Algorithms & Modeling
+networkx>=3.2.0
+
+# Visualization & Interactive Dashboards
+streamlit>=1.35.0
+plotly>=5.20.0
+matplotlib>=3.8.0
+
+# Testing & Quality Assurance
+pytest>=8.0.0

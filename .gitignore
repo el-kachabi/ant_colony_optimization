@@ -1,0 +1,37 @@
+# Project specific - prompt, scratch and presentations
+prompt.md
+PROMPT.md
+scratch/
+presentation.md
+presentation.pptx
+presentation*
+*.pptx
+*.ppt
+scripts/build_presentation_pptx.py
+
+# Python virtual environment
+.venv/
+venv/
+env/
+ENV/
+
+# Python bytecode & cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+
+# Streamlit
+.streamlit/secrets.toml
+
+# IDE & OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.log
+~$*
