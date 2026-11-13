@@ -1,7 +1,6 @@
 """
 Unit tests for Ant System (AS) algorithmic engine, probabilities, and pheromone dynamics.
-Author: El Kachabi Badr-eddine
-GitHub: https://github.com/el-kachabi
+Automated verification of mathematical properties and convergence.
 """
 
 import numpy as np

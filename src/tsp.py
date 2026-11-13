@@ -1,7 +1,6 @@
 """
 Mathematical modeling and instance generation for the Traveling Salesperson Problem (TSP).
-Author: El Kachabi Badr-eddine
-GitHub: https://github.com/el-kachabi
+Euclidean graph representation, tour validation, and dataset loading.
 """
 
 from dataclasses import dataclass, field

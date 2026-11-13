@@ -1,7 +1,6 @@
 """
 Interactive Plotly Visualization Engine for Ant Colony Optimization & TSP.
-Author: El Kachabi Badr-eddine
-GitHub: https://github.com/el-kachabi
+Dynamic charts, route inspection, convergence tracking, and pheromone matrices.
 """
 
 from typing import Dict, List, Optional, Tuple, Union

@@ -1,7 +1,6 @@
 """
 Advanced ACO Variants: Elitist Ant System (EAS) and Ant Colony System (ACS).
-Author: El Kachabi Badr-eddine
-GitHub: https://github.com/el-kachabi
+Mathematical models and specialized state transition rules.
 """
 
 from dataclasses import dataclass

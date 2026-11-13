@@ -1,7 +1,6 @@
 """
 Main Application Entry Point - Ant Colony Optimization (ACO) & TSP Platform.
-Author: El Kachabi Badr-eddine
-GitHub: https://github.com/el-kachabi
+Interactive scientific laboratory for bio-inspired metaheuristics.
 """
 
 import streamlit as st
@@ -13,7 +12,7 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-from config.settings import AUTHOR, GITHUB_PROFILE, GITHUB_REPO, PRESET_INSTANCES
+from config.settings import PRESET_INSTANCES
 from src.tsp import TSPInstance
 from src.ui_components import (
     inject_custom_css,
@@ -105,7 +104,7 @@ with col_right:
         ("5️⃣ Expériences & Sensibilité", "Analyse de l'impact des hyperparamètres (alpha, beta, rho, colonie) et heatmaps.", "pages/5_Experiences.py"),
         ("6️⃣ Banc d'Essai Comparatif", "Tournoi comparatif multi-algorithmes avec métriques réelles et benchmarks de référence.", "pages/6_Comparaison.py"),
         ("7️⃣ Cas d'Usage Industriels", "Applications concrètes : logistique, routage télécoms, PCB et ordonnancement.", "pages/7_Applications.py"),
-        ("8️⃣ Architecture & À Propos", "Spécifications techniques, bibliographie et profil de l'auteur El Kachabi Badr-eddine.", "pages/8_A_propos.py"),
+        ("8️⃣ Architecture & À Propos", "Spécifications techniques, analyse de complexité et bibliographie scientifique.", "pages/8_A_propos.py"),
     ]
 
     for title, desc, path in modules:
@@ -122,12 +121,12 @@ with col_right:
 # Scientific Manifesto Box
 st.markdown("---")
 st.markdown(
-    f"""
+    """
     <div style="background: rgba(19, 27, 46, 0.5); border: 1px solid #1E293B; border-radius: 10px; padding: 18px 24px; text-align: justify; font-size: 0.9rem; color: #94A3B8;">
         <span style="color: #00F2FE; font-weight: 700;">Engagement d'intégrité scientifique :</span> 
         Cette application est conçue pour l'ingénierie avancée et la recherche opérationnelle. 
         Chaque courbe de convergence, chaque matrice de probabilité et chaque dépôt de phéromone résulte d'une exécution algorithmique réelle en temps réel.
-        Développé par <b>{AUTHOR}</b> (<a href="{GITHUB_PROFILE}" target="_blank" style="color: #38BDF8;">@el-kachabi</a>).
+        Plateforme open-source dédiée aux métaheuristiques bio-inspirées et à l'optimisation combinatoire.
     </div>
     """,
     unsafe_allow_html=True,

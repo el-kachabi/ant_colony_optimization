@@ -1,7 +1,6 @@
 """
 Unit tests for Plotly visualization generation.
-Author: El Kachabi Badr-eddine
-GitHub: https://github.com/el-kachabi
+Verifies all interactive figures, maps, and matrices build properly.
 """
 
 import numpy as np

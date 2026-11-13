@@ -1,7 +1,6 @@
 """
 Industrial Applications & Real-World Use Cases of Ant Colony Optimization.
-Author: El Kachabi Badr-eddine
-GitHub: https://github.com/el-kachabi
+Logistics (VRP), Telecoms (AntNet), Electronics (PCB Drilling), and Job-Shop Scheduling.
 """
 
 import streamlit as st

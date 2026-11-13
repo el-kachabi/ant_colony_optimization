@@ -1,7 +1,6 @@
 """
 Theoretical Foundations & Interactive Step-by-Step Mathematical Calculator.
-Author: El Kachabi Badr-eddine
-GitHub: https://github.com/el-kachabi
+Detailed equations, transition rules, and step-by-step probability decomposition.
 """
 
 import streamlit as st

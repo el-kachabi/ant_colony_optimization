@@ -1,7 +1,6 @@
 """
 Unit tests for TSP problem modeling, distance matrix, and tour validation.
-Author: El Kachabi Badr-eddine
-GitHub: https://github.com/el-kachabi
+Verifies Euclidean metric invariants, tour closure, and preset integrity.
 """
 
 import numpy as np

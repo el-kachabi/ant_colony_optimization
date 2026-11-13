@@ -1,7 +1,6 @@
 """
 Interactive TSP Solver Page with multi-generator support and customizable ACO parameters.
-Author: El Kachabi Badr-eddine
-GitHub: https://github.com/el-kachabi
+Custom map generator, parameter tuning, and execution monitoring.
 """
 
 import streamlit as st

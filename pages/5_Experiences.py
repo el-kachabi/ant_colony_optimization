@@ -1,7 +1,6 @@
 """
 Experimental Laboratory & Hyperparameter Sensitivity Analysis Page.
-Author: El Kachabi Badr-eddine
-GitHub: https://github.com/el-kachabi
+Systematic grid evaluations, 2D heatmaps, and parameter impact studies.
 """
 
 import streamlit as st

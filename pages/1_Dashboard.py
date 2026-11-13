@@ -1,7 +1,6 @@
 """
 Dashboard Page - Executive Overview and Real-Time ACO Optimization.
-Author: El Kachabi Badr-eddine
-GitHub: https://github.com/el-kachabi
+Interactive monitoring of optimization iterations and pheromone dynamics.
 """
 
 import streamlit as st

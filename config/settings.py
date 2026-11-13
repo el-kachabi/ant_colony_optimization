@@ -1,7 +1,6 @@
 """
 Configuration and settings for the Ant Colony Optimization (ACO) & TSP Platform.
-Author: El Kachabi Badr-eddine
-GitHub: https://github.com/el-kachabi
+Open-source research and educational environment.
 """
 
 from dataclasses import dataclass
@@ -12,9 +11,7 @@ from typing import Dict, List, Tuple
 # ==============================================================================
 APP_TITLE = "Ant Colony Optimization & TSP Platform"
 APP_SUBTITLE = "Métaheuristique Bio-Inspirée, Modélisation Mathématique & Résolution Interactive"
-AUTHOR = "El Kachabi Badr-eddine"
-GITHUB_PROFILE = "https://github.com/el-kachabi"
-GITHUB_REPO = "https://github.com/el-kachabi/ant_colony_optimization"
+PROJECT_NAME = "ACO & TSP Lab"
 VERSION = "1.0.0"
 
 # ==============================================================================

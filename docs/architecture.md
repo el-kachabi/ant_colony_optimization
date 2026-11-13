@@ -1,8 +1,7 @@
 # Spécifications Techniques et Architecture Logicielle
 ## Projet : Optimisation par Colonie de Fourmis (Ant Colony Optimization – ACO)
-**Auteur :** El Kachabi Badr-eddine  
-**Profil GitHub :** [https://github.com/el-kachabi](https://github.com/el-kachabi)  
-**Dépôt :** [ant_colony_optimization](https://github.com/el-kachabi/ant_colony_optimization)  
+**Cadre :** Plateforme Ouverte de Métaheuristiques Bio-Inspirées & Recherche Opérationnelle  
+**Version :** 1.0.0 (Production & Éducation)  
 
 ---
 
@@ -138,7 +137,7 @@ ant_colony_optimization/
 │   ├── 5_Experiences.py     # Laboratoire de sensibilité (alpha, beta, rho, etc.)
 │   ├── 6_Comparaison.py     # Banc d'essai comparatif multi-algorithmes
 │   ├── 7_Applications.py    # Études de cas concrets (logistique, télécom, circuits)
-│   └── 8_A_propos.py        # Crédits auteur, architecture et perspectives
+│   └── 8_A_propos.py        # Spécifications, complexité, bibliographie et perspectives
 ├── src/
 │   ├── __init__.py
 │   ├── tsp.py               # Génération d'instances, distances, vérification de cycle
@@ -183,4 +182,46 @@ La suite de tests automatisée `pytest` valide les propriétés mathématiques e
 5. **Exactitude sur Petites Instances :** Comparaison des solutions ACO avec la solution exacte exhaustive calculée par le solveur Brute Force sur l'instance de 5 et 10 villes (erreur relative $< 1\%$).
 
 ---
-*Ce document sert de contrat de développement pour toutes les phases d'implémentation subséquentes.*
+
+## 7. Principes de Génie Logiciel & Design Patterns
+
+L'architecture logicielle repose sur des patrons de conception reconnus pour assurer la lisibilité, l'évolutivité et la robustesse du système :
+
+### 7.1 Patron Stratégie (*Strategy Pattern*)
+Toutes les variantes algorithmiques héritent d'une interface commune implicite :
+* Entrée : une instance `TSPInstance` et des hyperparamètres spécifiques.
+* Sortie : un objet standardisé `OptimizationResult` contenant le meilleur cycle hamiltonien trouvé, sa longueur totale, l'historique complet de convergence itération par itération, la matrice finale des phéromones et le temps d'exécution mesuré en millisecondes.
+* Avantage : le module de tournoi comparatif (`pages/6_Comparaison.py`) peut exécuter indifféremment n'importe quel solveur via une boucle polymorphe sans connaître ses détails internes.
+
+### 7.2 Séparation Stricte Calculs / Interface (*Model-View Separation*)
+* Les fichiers situés dans `src/` ne contiennent **aucun appel à Streamlit (`st.*`)**. Ils constituent un module Python pur, importable en script batch, dans un carnet Jupyter ou dans une API FastAPI sans modification.
+* Les fichiers situés dans `pages/` et `app.py` se concentrent uniquement sur l'orchestration de l'interface, la capture des entrées utilisateur via les contrôleurs (sliders, sélecteurs) et l'appel des méthodes de rendu Plotly.
+
+### 7.3 Optimisation Vectorielle avec NumPy
+Afin de concilier la souplesse de Python avec des performances proches du code C :
+* **Matrice des Distances :** Calculée en une seule opération vectorisée par diffusion spatiale :
+  $$\Delta x = X - X^T, \quad \Delta y = Y - Y^T \implies D = \sqrt{\Delta x^2 + \Delta y^2}$$
+* **Calcul des Probabilités :** Le produit $\tau_{ij}^\alpha \cdot \eta_{ij}^\beta$ est calculé par bloc sur l'ensemble des villes candidates non visitées, évitant les itérations Python lentes.
+
+---
+
+## 8. Guide d'Extension : Ajouter une Nouvelle Variante ACO
+
+Pour intégrer un nouvel algorithme d'optimisation (par exemple le *MAX-MIN Ant System* - MMAS) dans la plateforme :
+
+1. **Créer la classe dans `src/variants.py` :**
+   Implémenter la méthode `solve()` respectant la signature attendue :
+   ```python
+   class MaxMinAntSystem:
+       def __init__(self, alpha=1.0, beta=3.0, rho=0.02, tau_min=0.1, tau_max=10.0):
+           ...
+       def solve(self, instance: TSPInstance, max_iter: int = 50, seed: int = 42) -> OptimizationResult:
+           ...
+   ```
+2. **Ajouter les paramètres par défaut dans `config/settings.py` :**
+   Définir les bornes d'exploration pour l'interface interactive.
+3. **Brancher le solveur dans le Tournoi Comparatif (`pages/6_Comparaison.py`) :**
+   Ajouter la nouvelle méthode au dictionnaire de benchmark pour qu'elle concoure automatiquement aux côtés d'Ant System et des méthodes de référence.
+4. **Ajouter un test unitaire dans `tests/test_variants.py` :**
+   Valider que l'algorithme converge sur la micro-instance de 5 villes vers l'optimum mathématique certifié ($264.85$).
+

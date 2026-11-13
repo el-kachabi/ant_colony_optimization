@@ -1,7 +1,6 @@
 """
 Baseline Solvers for TSP Benchmarking: Nearest Neighbor, 2-Opt, and Exact Brute Force.
-Author: El Kachabi Badr-eddine
-GitHub: https://github.com/el-kachabi
+Reference algorithms for empirical comparison and validation.
 """
 
 from dataclasses import dataclass

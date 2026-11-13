@@ -8,6 +8,8 @@ presentation*
 *.pptx
 *.ppt
 scripts/build_presentation_pptx.py
+log.txt
+*.bat
 
 # Python virtual environment
 .venv/

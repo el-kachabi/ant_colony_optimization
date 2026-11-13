@@ -1,7 +1,6 @@
 """
 Ant Colony Optimization (ACO) Core Engine - Mathematical Implementation of Ant System (AS).
-Author: El Kachabi Badr-eddine
-GitHub: https://github.com/el-kachabi
+Vectorized NumPy implementation for combinatorial optimization.
 """
 
 from dataclasses import dataclass, field

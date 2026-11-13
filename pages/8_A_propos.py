@@ -1,14 +1,12 @@
 """
-About Page - Software Architecture, Scientific References, and Author Attribution.
-Author: El Kachabi Badr-eddine
-GitHub: https://github.com/el-kachabi
+About Page - Software Architecture, Scientific Specifications, and References.
 """
 
 import streamlit as st
 
 st.set_page_config(page_title="À Propos & Architecture | ACO Lab", page_icon="ℹ️", layout="wide")
 
-from config.settings import AUTHOR, GITHUB_PROFILE, GITHUB_REPO, VERSION
+from config.settings import PROJECT_NAME, VERSION
 from src.ui_components import inject_custom_css, initialize_session_state, render_page_header, render_sidebar
 
 inject_custom_css()
@@ -16,30 +14,27 @@ initialize_session_state()
 render_sidebar()
 
 render_page_header(
-    title="Architecture Logicielle, Références & Auteur",
-    subtitle="Spécifications d'ingénierie, analyse de complexité et bibliographie scientifique",
+    title="Architecture Logicielle & Spécifications Scientifiques",
+    subtitle="Ingénierie des algorithmes, analyse de complexité et bibliographie de référence",
     badge="MODULE 8 • À PROPOS",
 )
 
-col_author, col_specs = st.columns([1, 1.2])
+col_mission, col_specs = st.columns([1, 1.2])
 
-with col_author:
-    st.markdown("### 👤 Auteur & Dépôt Officiel")
+with col_mission:
+    st.markdown("### 🏛️ Mission & Cadre du Projet")
     st.markdown(
         f"""
         <div class="custom-card" style="border-left: 4px solid #00F2FE;">
-            <div style="font-size: 1.3rem; font-weight: 700; color: #F8FAFC;">{AUTHOR}</div>
-            <div style="color: #38BDF8; font-size: 0.95rem; margin-top: 4px;">Ingénieur en Intelligence Artificielle & Systèmes Décisionnels</div>
+            <div style="font-size: 1.3rem; font-weight: 700; color: #F8FAFC;">{PROJECT_NAME} (v{VERSION})</div>
+            <div style="color: #38BDF8; font-size: 0.95rem; margin-top: 4px;">Plateforme d'Optimisation Combinatoire & Métaheuristiques Bio-Inspirées</div>
             <div style="margin-top: 15px; color: #94A3B8; font-size: 0.9rem; line-height: 1.6;">
-                Projet conçu dans le cadre d'une suite avancée de métaheuristiques bio-inspirées et d'optimisation combinatoire sous Python.
+                Environnement scientifique interactif dédié à la simulation, à l'analyse mathématique et à la résolution haute performance du Problème du Voyageur de Commerce (TSP).
             </div>
-            <div style="margin-top: 18px;">
-                <a href="{GITHUB_PROFILE}" target="_blank" style="background: rgba(0, 242, 254, 0.15); color: #00F2FE; border: 1px solid rgba(0, 242, 254, 0.4); padding: 8px 14px; border-radius: 6px; text-decoration: none; font-size: 0.85rem; font-weight: 600; display: inline-block;">
-                    🔗 Visiter le Profil GitHub
-                </a>
-                <a href="{GITHUB_REPO}" target="_blank" style="background: rgba(148, 163, 184, 0.1); color: #E2E8F0; border: 1px solid #334155; padding: 8px 14px; border-radius: 6px; text-decoration: none; font-size: 0.85rem; font-weight: 600; display: inline-block; margin-left: 8px;">
-                    📂 Dépôt GitHub du Projet
-                </a>
+            <div style="margin-top: 15px; color: #CBD5E1; font-size: 0.85rem; line-height: 1.6;">
+                • Implémentation rigoureuse de 3 variantes ACO (AS, EAS, ACS).<br>
+                • Benchmarks comparatifs face aux heuristiques classiques (2-Opt, Plus Proche Voisin, Brute Force).<br>
+                • Calcul vectorisé haute vitesse sous NumPy sans dépendances lourdes.
             </div>
         </div>
         """,

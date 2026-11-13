@@ -1,7 +1,6 @@
 """
 Unit tests for ACO variants (EAS, ACS) and baseline solvers (NN, 2-Opt, Brute Force).
-Author: El Kachabi Badr-eddine
-GitHub: https://github.com/el-kachabi
+Checks exact optimality certification and heuristic bounds.
 """
 
 import pytest

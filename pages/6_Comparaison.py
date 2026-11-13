@@ -1,7 +1,6 @@
 """
 Comparative Algorithmic Benchmark Tournament Page.
-Author: El Kachabi Badr-eddine
-GitHub: https://github.com/el-kachabi
+Direct tournament comparing ACO variants with heuristic and exact methods.
 """
 
 import streamlit as st

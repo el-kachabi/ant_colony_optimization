@@ -1,7 +1,6 @@
 """
 Microscopic Step-by-Step Ant Colony Simulation Page.
-Author: El Kachabi Badr-eddine
-GitHub: https://github.com/el-kachabi
+Animated visualization of ant movements and pheromone deposition.
 """
 
 import streamlit as st

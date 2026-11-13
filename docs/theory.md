@@ -1,8 +1,7 @@
 # Traité Théorique et Mathématique de l'Optimisation par Colonie de Fourmis (ACO)
 ## Application au Problème du Voyageur de Commerce (Traveling Salesperson Problem – TSP)
-**Auteur :** El Kachabi Badr-eddine  
-**Profil GitHub :** [https://github.com/el-kachabi](https://github.com/el-kachabi)  
-**Dépôt :** [ant_colony_optimization](https://github.com/el-kachabi/ant_colony_optimization)  
+**Cadre Scientifique :** Algorithmes Bio-Inspirés & Recherche Opérationnelle  
+**Version :** 1.0.0 (Édition Complète)  
 
 ---
 
@@ -224,3 +223,88 @@ $$p_{ij} = \frac{\tau_{ij}}{\sum_{l} \tau_{il}}, \quad H_i = -\sum_{j} p_{ij} \l
 $$H_{\text{norm}} = \frac{\frac{1}{n}\sum_{i=1}^n H_i}{\ln(n - 1)} \in [0, 1]$$
 - **$H_{\text{norm}} \approx 1$ :** Distribution uniforme des phéromones (phase exploratoire active, diversité maximale).
 - **$H_{\text{norm}} \to 0$ :** Les phéromones sont concentrées sur un unique cycle hamiltonien (convergence et arrêt de la recherche).
+
+---
+
+## 7. Pseudo-Code Structuré d'Ant System (AS)
+
+```text
+ALGORITHME Ant_System_TSP(Villes, alpha, beta, rho, Q, m, T_max):
+    // 1. Initialisation
+    D <-- Calculer_Matrice_Distances(Villes)
+    eta <-- 1.0 / D                     // Visibilité heuristique locale
+    tau_0 <-- 1.0 / (n * L_glouton)     // Pheromone initiale
+    tau <-- Matrice_Uniforme(n, n, tau_0)
+    Meilleur_Cycle <-- VIDE
+    Meilleure_Longueur <-- INFINI
+
+    // 2. Boucle Principale des Générations
+    POUR t = 1 JUSQU'A T_max FAIRE:
+        Tours <-- Tableau de taille m
+        Longueurs <-- Tableau de taille m
+
+        // Phase A : Construction stochastique des tournées par chaque fourmi
+        POUR k = 1 JUSQU'A m FAIRE:
+            Ville_Depart <-- Entier_Aleatoire(0, n - 1)
+            Tour_k <-- [Ville_Depart]
+            Non_Visitees <-- Villes \ {Ville_Depart}
+
+            TANT QUE Non_Visitees n'est pas VIDE FAIRE:
+                i <-- Tour_k.dernier_element()
+                POUR chaque j DANS Non_Visitees FAIRE:
+                    Attrait[j] <-- (tau[i, j] ^ alpha) * (eta[i, j] ^ beta)
+                
+                Somme_Attraits <-- SOMME(Attrait[j] pour tout j dans Non_Visitees)
+                POUR chaque j DANS Non_Visitees FAIRE:
+                    Probabilite[j] <-- Attrait[j] / Somme_Attraits
+                
+                Ville_Suivante <-- Tirage_Roulette(Non_Visitees, Probabilites)
+                Tour_k.ajouter(Ville_Suivante)
+                Non_Visitees.retirer(Ville_Suivante)
+
+            Tour_k.fermer_cycle()       // Retour à la ville de départ
+            L_k <-- Calculer_Longueur(Tour_k, D)
+            Tours[k] <-- Tour_k
+            Longueurs[k] <-- L_k
+
+            SI L_k < Meilleure_Longueur ALORS:
+                Meilleure_Longueur <-- L_k
+                Meilleur_Cycle <-- Tour_k
+
+        // Phase B : Évaporation globale des phéromones
+        tau <-- (1.0 - rho) * tau
+
+        // Phase C : Dépôt additif proportionnel à la qualité
+        POUR k = 1 JUSQU'A m FAIRE:
+            Delta_tau <-- Q / Longueurs[k]
+            POUR chaque arete (i, j) DANS Tours[k] FAIRE:
+                tau[i, j] <-- tau[i, j] + Delta_tau
+                tau[j, i] <-- tau[j, i] + Delta_tau    // Symétrie du graphe
+
+    RETOURNER Meilleur_Cycle, Meilleure_Longueur
+```
+
+---
+
+## 8. Guide Pratique de Réglage des Hyperparamètres
+
+Le tableau suivant résume le rôle physique de chaque paramètre et les effets des valeurs extrêmes :
+
+| Hyperparamètre | Symbole | Plage Recommandée | Rôle Pratique | Risque si trop Faible | Risque si trop Élevé |
+| :--- | :---: | :---: | :--- | :--- | :--- |
+| **Poids Phéromone** | $\alpha$ | $[0.8, 1.5]$ | Force du suivi de la mémoire collective | Marche aléatoire non guidée | Convergence prématurée vers un mauvais optimum |
+| **Poids Distance** | $\beta$ | $[2.0, 5.0]$ | Importance de la proximité physique immédiate | Décisions lentes ignorant la géométrie | Comportement glouton myope piégé par les croisements |
+| **Taux d'Évaporation** | $\rho$ | $[0.3, 0.6]$ | Vitesse d'oubli des pistes obsolètes | Mémoire saturée, incapable d'oublier les erreurs | Perte de mémoire, comportement instable |
+| **Taille de Colonie** | $m$ | $n \le m \le 2n$ | Nombre de fourmis actives par itération | Échantillonnage statistique insuffisant | Temps de calcul excessif par itération |
+| **Dose Totale** | $Q$ | $[50, 200]$ | Échelle de grandeur des incréments de trace | Variations infinitésimales | Dépassement d'échelle numérique |
+
+---
+
+## 9. Connexion avec l'Apprentissage par Renforcement (*Reinforcement Learning*)
+
+Sur le plan computationnel, l'optimisation par colonie de fourmis peut être interprétée comme une instance distribuée d'**apprentissage par renforcement sans modèle** (*Model-Free Reinforcement Learning*) :
+1. **Politique stochastique ($\pi_\theta$) :** La distribution de transition $P_{ij}^k$ représente une politique paramétrée où les paramètres $\theta$ sont les intensités de phéromones $\tau_{ij}$.
+2. **Signal de Récompense ($R$) :** La récompense scalaire différée attribuée à la fin d'un épisode est inversement proportionnelle au coût total du trajet ($R_k = Q / L_k$).
+3. **Mise à jour des Valeurs :** La règle d'évaporation et de dépôt correspond directement à l'actualisation de la fonction de valeur d'état-action ($Q$-value update) avec facteur d'escompte $\gamma = 1 - \rho$.
+4. **Stigmergie $\leftrightarrow$ Mémoire partagée :** Contrairement aux algorithmes d'apprentissage mono-agent (comme le Q-Learning classique), ACO utilise un environnement actif agissant comme un tableau noir partagé (*blackboard*) permettant la coopération asynchrone massive d'agents élémentaires.
+

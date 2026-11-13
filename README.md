@@ -5,9 +5,9 @@
 [![Streamlit App](https://img.shields.io/badge/Streamlit-1.35%2B-FF4B4B.svg?logo=streamlit&logoColor=white)](https://streamlit.io/)
 [![Plotly Interactive](https://img.shields.io/badge/Plotly-5.20%2B-3F4F75.svg?logo=plotly&logoColor=white)](https://plotly.com/)
 [![Tests Pytest](https://img.shields.io/badge/Pytest-13%20passed-10B981.svg?logo=pytest&logoColor=white)](https://pytest.org/)
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/el-kachabi/ant_colony_optimization/blob/main/notebooks/ant_colony_optimization.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](notebooks/ant_colony_optimization.ipynb)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Auteur: El Kachabi Badr-eddine](https://img.shields.io/badge/Auteur-El%20Kachabi%20Badr--eddine-00F2FE.svg?logo=github)](https://github.com/el-kachabi)
+[![Architecture: Modulaire](https://img.shields.io/badge/Architecture-Modulaire%20NumPy-00F2FE.svg)](#6-architecture-logicielle-du-projet)
 
 ---
 
@@ -25,7 +25,7 @@
 * <a href="#7-installation-et-exécution-locale">7. Installation et Exécution Locale</a>
 * <a href="#8-validation-et-tests-unitaires">8. Validation et Tests Unitaires</a>
 * <a href="#9-cas-dusage-industriels">9. Cas d'Usage Industriels</a>
-* <a href="#10-auteur-et-licence">10. Auteur et Licence</a>
+* <a href="#10-licence-et-utilisation">10. Licence et Utilisation</a>
 
 ---
 
@@ -191,7 +191,7 @@ ant_colony_optimization/
 │   ├── 5_Experiences.py          # Laboratoire d'analyse de sensibilité et heatmap 2D
 │   ├── 6_Comparaison.py          # Tournoi comparatif en direct multi-algorithmes
 │   ├── 7_Applications.py         # Cas d'usage concrets (logistique, télécoms, PCB, JSSP)
-│   └── 8_A_propos.py             # Architecture, complexité et profil de l'auteur
+│   └── 8_A_propos.py             # Spécifications, complexité et bibliographie scientifique
 ├── src/
 │   ├── __init__.py
 │   ├── tsp.py                    # Modélisation TSP, distances euclidiennes et validation
@@ -219,8 +219,8 @@ ant_colony_optimization/
 
 ### 7.2 Clonage et Installation
 ```bash
-# 1. Cloner le dépôt GitHub
-git clone https://github.com/el-kachabi/ant_colony_optimization.git
+# 1. Cloner ou télécharger le dépôt
+git clone <URL_DU_DEPOT>/ant_colony_optimization.git
 cd ant_colony_optimization
 
 # 2. Créer et activer un environnement virtuel
@@ -236,6 +236,12 @@ pip install -r requirements.txt
 ```
 
 ### 7.3 Lancement de l'Application Streamlit
+
+#### Méthode 1 : En 1 Clic (Windows)
+Double-cliquez simplement sur **`run_app.bat`** (ou exécutez `.\run_app.bat` dans votre terminal).  
+Pour arrêter le serveur et libérer le port 8501, double-cliquez sur **`stop_app.bat`**.
+
+#### Méthode 2 : Ligne de Commande Standard
 ```bash
 streamlit run app.py
 ```
@@ -283,10 +289,10 @@ L'optimisation par colonie de fourmis s'applique avec un fort retour sur investi
 
 ---
 
-<a id="10-auteur-et-licence"></a>
-## 10. Auteur et Licence
+<a id="10-licence-et-utilisation"></a>
+## 10. Licence et Utilisation
 
-* **Auteur :** **El Kachabi Badr-eddine**
-* **Profil GitHub :** [https://github.com/el-kachabi](https://github.com/el-kachabi)
-* **Dépôt Officiel :** [https://github.com/el-kachabi/ant_colony_optimization](https://github.com/el-kachabi/ant_colony_optimization)
-* **Licence :** Ce projet est distribué sous licence open-source **MIT**. Vous êtes libre de l'utiliser, le modifier et le redistribuer.
+Ce projet est distribué sous licence open-source **MIT**.
+
+Vous êtes libre d'utiliser, reproduire, modifier, diffuser et adapter ce code source pour vos recherches académiques, vos travaux universitaires, vos études en recherche opérationnelle ou vos projets industriels. Les contributions et enrichissements par la communauté sont les bienvenus via pull requests.
+

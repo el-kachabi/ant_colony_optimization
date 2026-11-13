@@ -1,16 +1,13 @@
 """
 Reusable UI Components and Style Injectors for Streamlit ACO Platform.
-Author: El Kachabi Badr-eddine
-GitHub: https://github.com/el-kachabi
+Clean, modern, professional interface.
 """
 
 import streamlit as st
 from config.settings import (
     APP_TITLE,
     APP_SUBTITLE,
-    AUTHOR,
-    GITHUB_PROFILE,
-    GITHUB_REPO,
+    PROJECT_NAME,
     THEME_COLORS,
     PRESET_INSTANCES,
 )
@@ -64,7 +61,7 @@ def inject_custom_css():
             font-weight: 400;
         }
 
-        .header-author {
+        .header-meta {
             color: #38BDF8;
             font-size: 0.9rem;
             margin-top: 8px;
@@ -277,9 +274,6 @@ def render_page_header(title: str, subtitle: str, badge: str = "ACO LAB"):
             <span class="badge-cyan">{badge}</span>
             <h1 class="header-title">{title}</h1>
             <p class="header-subtitle">{subtitle}</p>
-            <div class="header-author">
-                Auteur : <b>{AUTHOR}</b> | <a href="{GITHUB_PROFILE}" target="_blank" style="color: #38BDF8; text-decoration: none;">GitHub @el-kachabi</a>
-            </div>
         </div>
         """,
         unsafe_allow_html=True,
@@ -359,9 +353,8 @@ def render_sidebar():
         st.markdown(
             f"""
             <div style="font-size: 0.8rem; color: #64748B; text-align: center;">
-                <b>Auteur :</b> {AUTHOR}<br>
-                <a href="{GITHUB_PROFILE}" target="_blank" style="color: #00F2FE;">Profil GitHub</a> |
-                <a href="{GITHUB_REPO}" target="_blank" style="color: #00F2FE;">Dépôt du Projet</a>
+                <b>ACO & TSP Lab</b> • Optimisation Bio-Inspirée<br>
+                Résolution du Problème du Voyageur de Commerce
             </div>
             """,
             unsafe_allow_html=True,
