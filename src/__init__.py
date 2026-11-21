@@ -1,1 +1,1 @@
-"""Ant Colony Optimization source package."""
+"""Package principal simplifié pour l'Optimisation par Colonie de Fourmis (ACO)."""
