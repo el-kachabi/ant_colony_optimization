@@ -1,6 +1,7 @@
 """
 Visualisations Interactives Plotly - Ant Colony Optimization (ACO) & TSP.
-Contient uniquement les 2 graphiques essentiels pour une présentation claire en 15 minutes.
+Contient les 2 graphiques essentiels (Carte du réseau & Courbe de convergence),
+entièrement commentés pour expliquer chaque couche graphique.
 """
 
 from typing import List, Optional
@@ -15,35 +16,46 @@ def plot_tsp_solution(
     pheromone_matrix: Optional[np.ndarray] = None,
 ) -> go.Figure:
     """
-    Graphique 1 : Carte 2D des villes, traces de phéromones et meilleure tournée trouvée.
+    Graphique 1 : Carte 2D affichant :
+    - Couche 1 (Arrière-plan orange) : L'intensité des pistes de phéromones tau_ij sur les arêtes.
+    - Couche 2 (Ligne continue cyan) : Le meilleur cycle hamiltonien découvert par la colonie.
+    - Couche 3 (Sommets)             : Les villes (Ville 0 de départ mise en évidence en vert).
     """
     fig = go.Figure()
     n = instance.dimension
     cities = instance.cities
 
-    # 1. Affichage des traces de phéromones en arrière-plan (arêtes les plus marquées)
+    # --------------------------------------------------------------------------
+    # COUCHE 1 : Affichage des traces de phéromones en arrière-plan
+    # --------------------------------------------------------------------------
     if pheromone_matrix is not None:
         max_tau = float(np.max(pheromone_matrix)) if np.max(pheromone_matrix) > 0 else 1.0
         first_phero = True
         for i in range(n):
             for j in range(i + 1, n):
+                # Normalisation de la phéromone entre 0 et 1 par rapport à l'arête la plus marquée
                 ratio = float(pheromone_matrix[i, j]) / max_tau
-                if ratio > 0.15:  # Filtre les traces négligeables pour la lisibilité
+                # On filtre les traces inférieures à 15% pour garder une carte propre et lisible
+                if ratio > 0.15:
                     fig.add_trace(
                         go.Scatter(
                             x=[cities[i].x, cities[j].x],
                             y=[cities[i].y, cities[j].y],
                             mode="lines",
                             name="Pistes de Phéromones (τ)",
+                            # Épaisseur et opacité proportionnelles à la concentration en phéromone
                             line=dict(color=f"rgba(255, 153, 0, {min(0.85, ratio * 0.7):.2f})", width=1 + 4 * ratio),
                             hoverinfo="skip",
-                            showlegend=first_phero,
+                            showlegend=first_phero,  # N'affiche l'entrée dans la légende qu'une seule fois
                         )
                     )
                     first_phero = False
 
-    # 2. Tracé du meilleur circuit découvert par les fourmis
+    # --------------------------------------------------------------------------
+    # COUCHE 2 : Tracé du meilleur circuit hamiltonien découvert par les fourmis
+    # --------------------------------------------------------------------------
     if best_path:
+        # On ajoute best_path[0] à la fin de la liste pour fermer visuellement la boucle
         closed_path = best_path + [best_path[0]]
         xs = [cities[idx].x for idx in closed_path]
         ys = [cities[idx].y for idx in closed_path]
@@ -59,7 +71,9 @@ def plot_tsp_solution(
             )
         )
 
-    # 3. Sommets des villes
+    # --------------------------------------------------------------------------
+    # COUCHE 3 : Affichage des sommets des villes et de leurs étiquettes (V0, V1...)
+    # --------------------------------------------------------------------------
     fig.add_trace(
         go.Scatter(
             x=[c.x for c in cities],
@@ -77,6 +91,7 @@ def plot_tsp_solution(
         )
     )
 
+    # Configuration de la mise en page (titre à gauche, légende encadrée à droite sans chevauchement)
     fig.update_layout(
         title=dict(
             text="🗺️ Carte du Réseau : Pistes de Phéromones & Meilleur Circuit ACO",
@@ -111,11 +126,15 @@ def plot_convergence(
     optimal_length: Optional[float] = None,
 ) -> go.Figure:
     """
-    Graphique 2 : Courbe de convergence de la colonie au fil des itérations.
+    Graphique 2 : Courbe de convergence illustrant l'apprentissage de la colonie :
+    - Courbe pointillée grise : Distance moyenne des m fourmis à chaque itération.
+    - Courbe continue cyan    : Meilleure distance trouvée depuis le début (Best-so-far).
+    - Lignes horizontales     : Seuils de référence (Algorithme Glouton et Optimum connu).
     """
     iters = list(range(1, len(history_best) + 1))
     fig = go.Figure()
 
+    # 1. Évolution de la distance moyenne de la population de fourmis
     fig.add_trace(
         go.Scatter(
             x=iters,
@@ -126,6 +145,7 @@ def plot_convergence(
         )
     )
 
+    # 2. Évolution de la meilleure distance globale découverte (monotone décroissante)
     fig.add_trace(
         go.Scatter(
             x=iters,
@@ -137,6 +157,7 @@ def plot_convergence(
         )
     )
 
+    # 3. Ligne horizontale de comparaison avec l'heuristique Gloutonne (Plus Proche Voisin)
     if greedy_length is not None:
         fig.add_hline(
             y=greedy_length,
@@ -146,6 +167,7 @@ def plot_convergence(
             annotation_position="top right",
         )
 
+    # 4. Ligne horizontale indiquant l'optimum mathématique connu
     if optimal_length is not None:
         fig.add_hline(
             y=optimal_length,

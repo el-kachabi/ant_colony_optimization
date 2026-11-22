@@ -1,6 +1,7 @@
 """
 Application Interactive Unifiée - Optimisation par Colonie de Fourmis (ACO) & TSP.
-Version pédagogique structurée en 3 onglets pour une présentation complète en 15 minutes.
+Interface Streamlit mono-page structurée en 3 onglets pédagogiques.
+Chaque section est commentée pour expliquer le rôle des composants d'interface et des appels algorithmiques.
 """
 
 import pandas as pd
@@ -15,6 +16,7 @@ from src.core_aco import (
 )
 from src.visualization import plot_convergence, plot_tsp_solution
 
+# Configuration générale de la fenêtre Streamlit (titre de l'onglet navigateur et mise en page large)
 st.set_page_config(
     page_title="ACO & TSP - Plateforme Pédagogique",
     page_icon="🐜",
@@ -22,19 +24,20 @@ st.set_page_config(
 )
 
 # ==============================================================================
-# BARRE LATÉRALE : CONFIGURATION RAPIDE DU PROBLÈME ET DES PARAMÈTRES ACO
+# 1. BARRE LATÉRALE : CONFIGURATION DU PROBLÈME TSP ET DES HYPERPARAMÈTRES ACO
 # ==============================================================================
 with st.sidebar:
     st.title("🐜 Paramètres ACO")
     st.caption("Configuration du problème TSP et de la colonie")
 
+    # Sélection du mode de génération des villes : instance étalonnée ou génération aléatoire
     mode_carte = st.radio("Choix de l'instance :", ["Instances de Référence", "Carte Aléatoire"])
     if mode_carte == "Instances de Référence":
         preset_key = st.selectbox(
             "Instance TSP :",
             options=list(PRESET_INSTANCES.keys()),
             format_func=lambda k: PRESET_INSTANCES[k]["name"],
-            index=2,  # 20 villes par défaut pour une belle démonstration
+            index=2,  # Sélectionne l'instance de 20 villes par défaut
         )
         instance = TSPInstance.load_preset(preset_key)
     else:
@@ -44,6 +47,7 @@ with st.sidebar:
 
     st.divider()
     st.subheader("Réglages de la Colonie")
+    # Curseurs interactifs permettant de modifier en direct les hyperparamètres de l'algorithme
     alpha = st.slider("α (Poids Phéromones) :", 0.0, 5.0, 1.0, 0.2, help="Exploitation de la mémoire collective")
     beta = st.slider("β (Poids Visibilité 1/d) :", 0.0, 8.0, 3.0, 0.5, help="Exploration gloutonne locale")
     rho = st.slider("ρ (Taux d'Évaporation) :", 0.05, 0.95, 0.50, 0.05, help="Vitesse d'oubli des mauvaises pistes")
@@ -53,7 +57,7 @@ with st.sidebar:
     seed_aco = st.number_input("Graine aléatoire ACO :", min_value=1, max_value=999, value=42)
 
 # ==============================================================================
-# EN-TÊTE PRINCIPAL
+# 2. EN-TÊTE PRINCIPAL & EXÉCUTION DU MOTEUR D'OPTIMISATION
 # ==============================================================================
 st.title("🐜 Optimisation par Colonie de Fourmis (ACO) — Résolution du TSP")
 st.markdown(
@@ -61,7 +65,7 @@ st.markdown(
     "*Présentation interactive en 3 volets : Simulation, Modèle Mathématique et Comparatif.*"
 )
 
-# Exécution du solveur ACO et de la référence Gloutonne
+# Instanciation et lancement du solveur ACO avec les paramètres choisis dans la barre latérale
 solver = AntSystem(
     alpha=alpha,
     beta=beta,
@@ -73,11 +77,13 @@ solver = AntSystem(
     seed=int(seed_aco),
 )
 aco_res = solver.solve(instance)
+
+# Exécution de l'heuristique Gloutonne (Plus Proche Voisin) pour disposer d'une base de comparaison
 _, greedy_len, greedy_time = solve_nearest_neighbor(instance)
 gain_vs_greedy = ((greedy_len - aco_res.best_length) / greedy_len) * 100.0
 
 # ==============================================================================
-# NAVIGATION EN 3 ONGLETS PÉDAGOGIQUES (CALIBRÉS POUR 15 MINUTES)
+# 3. NAVIGATION EN 3 ONGLETS PÉDAGOGIQUES
 # ==============================================================================
 tab_demo, tab_theory, tab_comp = st.tabs([
     "🚀 1. Démonstration & Simulation TSP",
@@ -89,24 +95,26 @@ tab_demo, tab_theory, tab_comp = st.tabs([
 # ONGLET 1 : DÉMONSTRATION INTERACTIVE & SIMULATION
 # ------------------------------------------------------------------------------
 with tab_demo:
+    # Bandeau de 4 indicateurs clés de performance (KPIs)
     k1, k2, k3, k4 = st.columns(4)
     k1.metric("Villes (N)", f"{instance.dimension} sommets")
     k2.metric("Meilleure Distance ACO", f"{aco_res.best_length:.2f}", f"{-gain_vs_greedy:+.2f}% vs Glouton")
     k3.metric("Distance Glouton (Référence)", f"{greedy_len:.2f}")
     k4.metric("Temps de Calcul ACO", f"{aco_res.execution_time_ms:.1f} ms")
 
-    # Niveau 1 : Carte du réseau TSP et de la meilleure tournée
+    # Niveau 1 : Carte du réseau TSP, pistes de phéromones et meilleure tournée (pleine largeur)
     st.plotly_chart(
         plot_tsp_solution(instance, aco_res.best_path, aco_res.pheromone_matrix),
         use_container_width=True,
     )
 
+    # Affichage textuel de l'ordre exact de passage dans les villes
     circuit_str = " ➔ ".join(f"V{i}" for i in aco_res.best_path + [aco_res.best_path[0]])
     st.info(f"**Meilleur cycle hamiltonien identifié :** `{circuit_str}`")
 
     st.divider()
 
-    # Niveau 2 : Courbe de convergence de la colonie
+    # Niveau 2 : Courbe de convergence de la colonie au fil des générations (pleine largeur)
     st.plotly_chart(
         plot_convergence(aco_res.history_best, aco_res.history_mean, greedy_len, instance.optimal_known),
         use_container_width=True,
@@ -124,6 +132,7 @@ with tab_theory:
         "l'évaporation naturelle efface les détours sous-optimaux."
     )
 
+    # Présentation des 3 formules mathématiques fondamentales en colonnes
     st.subheader("📐 2. Les 3 Équations Fondamentales du Modèle")
     c_eq1, c_eq2, c_eq3 = st.columns(3)
     with c_eq1:
@@ -143,6 +152,7 @@ with tab_theory:
     st.subheader("🧮 3. Exemple Numérique en Direct : Décision depuis la Ville 0")
     st.caption("Décomposition du calcul des probabilités de transition au départ de la Ville 0 vers ses voisins :")
 
+    # Calcul en temps réel des probabilités de transition depuis la Ville 0 vers les premières villes voisines
     unvisited_demo = list(range(1, min(6, instance.dimension)))
     probs_demo = solver.compute_probabilities(0, unvisited_demo, aco_res.pheromone_matrix, instance.heuristic_matrix)
     rows_calc = []
@@ -164,6 +174,7 @@ with tab_theory:
 # ------------------------------------------------------------------------------
 with tab_comp:
     st.subheader(f"⚔️ Banc d'Essai Comparatif sur : {instance.name}")
+    # Comparaison directe entre Ant System standard (e=0), Elitist Ant System (e=5) et le Glouton
     res_as = AntSystem(alpha, beta, rho, 100.0, num_ants, max_iter, elitist_weight=0.0, seed=int(seed_aco)).solve(instance)
     res_eas = AntSystem(alpha, beta, rho, 100.0, num_ants, max_iter, elitist_weight=5.0, seed=int(seed_aco)).solve(instance)
 
@@ -172,6 +183,7 @@ with tab_comp:
         {"Algorithme": "Ant System (AS Standard)", "Catégorie": "Métaheuristique ACO", "Distance": round(res_as.best_length, 2), "Temps (ms)": round(res_as.execution_time_ms, 1)},
         {"Algorithme": "Elitist Ant System (EAS)", "Catégorie": "Métaheuristique ACO Élitiste", "Distance": round(res_eas.best_length, 2), "Temps (ms)": round(res_eas.execution_time_ms, 1)},
     ]
+    # Si le nombre de villes est <= 10, on ajoute la référence exacte par Force Brute
     if instance.dimension <= 10:
         _, bf_len, bf_time = solve_brute_force(instance)
         comp_rows.append({"Algorithme": "Brute Force Exact ((N-1)!/2)", "Catégorie": "Optimum Absolu Garanti", "Distance": round(bf_len, 2), "Temps (ms)": round(bf_time, 2)})
